@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮 Quiz Mobile Pro</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(135deg, #0f0f0f, #1b1b2e);
+      color: white;
+      text-align: center;
+      touch-action: manipulation;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      margin: 15px auto;
+      border-radius: 20px;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0,255,213,0.2);
+    }
+
+    h1 {
+      color: #00ffd5;
+      font-size: 22px;
+    }
+
+    input {
+      width: 90%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      width: 95%;
+      padding: 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #00ffd5, #00aaff);
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .answer {
+      width: 95%;
+      padding: 14px;
+      margin: 8px auto;
+      border-radius: 12px;
+      border: none;
+      background: #222;
+      color: white;
+      font-size: 16px;
+    }
+
+    .answer:active {
+      background: #00ffd5;
+      color: black;
+    }
+
+    #score {
+      color: #00ffd5;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <h1>🎮 Quiz Mobile Pro</h1>
+
+    <!-- 👤 اسم اللاعب (مضمون للجوال) -->
+    <input id="playerName" placeholder="👤 اكتب اسمك">
+
+    <button class="btn" onclick="startGame()">ابدأ اللعبة</button>
+  </div>
+
+  <div class="card">
+    <h2 id="question">جاهز؟ 😎</h2>
+
+    <div id="answers"></div>
+
+    <p id="score">🏆 النقاط: 0</p>
+  </div>
+
+</div>
+
+<script>
+
+let player = "";
+let score = 0;
+let current = 0;
+
+let questions = [
+  { q: "ما هي عاصمة السعودية؟", a: ["جدة","الرياض","مكة","الدمام"], c: 1 },
+  { q: "2 + 2 = ?", a: ["3","4","5","6"], c: 1 },
+  { q: "كم عدد قارات العالم؟", a: ["5","6","7","8"], c: 2 },
+  { q: "من مؤسس مايكروسوفت؟", a: ["جوبز","غيتس","ماسك","بيزوس"], c: 1 }
+];
+
+function startGame() {
+
+  player = document.getElementById("playerName").value.trim();
+
+  if (player === "") {
+    alert("⚠️ اكتب اسمك!");
+    document.getElementById("playerName").focus();
+    return;
+  }
+
+  score = 0;
+  current = 0;
+
+  showQuestion();
+}
+
+function showQuestion() {
+
+  if (current >= questions.length) {
+    document.getElementById("question").innerText =
+      "🎉 انتهت اللعبة " + player;
+
+    document.getElementById("answers").innerHTML = "";
+    document.getElementById("score").innerText =
+      "🏆 نتيجتك: " + score;
+
+    return;
+  }
+
+  let q = questions[current];
+
+  document.getElementById("question").innerText = q.q;
+
+  let answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
+
+  q.a.forEach((ans, i) => {
+    let btn = document.createElement("button");
+    btn.className = "answer";
+    btn.innerText = ans;
+
+    btn.onclick = () => {
+      if (i === q.c) score++;
+
+      current++;
+      document.getElementById("score").innerText = "🏆 النقاط: " + score;
+
+      showQuestion();
+    };
+
+    answersDiv.appendChild(btn);
+  });
+}
+
+</script>
+
+</body>
+</htm>
